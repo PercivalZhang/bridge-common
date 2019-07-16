@@ -1,0 +1,27 @@
+[package]
+name = "merkle"
+version = "0.1.0"
+authors = ["Chainpool <http://chainx.org>"]
+edition = "2018"
+
+[dependencies]
+ustd = { package = "ustd", path = "../../common/ustd", default-features = false }
+primitives = { path = "../primitives", default-features = false }
+serialization = { path = "../serialization", default-features = false }
+chain = { path = "../chain", default-features = false }
+bit-vec = { path = "../../bit-vec", default-features = false }
+parity-codec = { version = "4.1.1", default-features = false }
+
+[dev-dependencies]
+crypto = { path = "../crypto", default-features = false }
+
+[features]
+default = ["std"]
+std = [
+     "ustd/std",
+     "primitives/std",
+     "serialization/std",
+     "chain/std",
+     "bit-vec/std",
+     "parity-codec/std",
+]

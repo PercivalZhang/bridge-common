@@ -1,0 +1,32 @@
+
+[workspace]
+members = [
+    "bit-vec",
+    "common/base58",
+    "common/ustd",
+    "common/primitive-types",
+    "common/rlp",
+    "bit-vec",
+    "light-btc/chain",
+    "light-btc/crypto",
+    "light-btc/keys",
+    "light-btc/merkle",
+    "light-btc/primitives",
+    "light-btc/script",
+    "light-btc/serialization",
+
+]
+
+
+[build-dependencies]
+vergen = '3'
+
+
+[package]
+build = 'build.rs'
+edition = '2018'
+name = 'bridge-common'
+version = '1.0.0'
+
+[profile.release]
+panic = 'unwind'
