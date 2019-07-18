@@ -16,7 +16,7 @@ pub struct BlockHeader {
     pub previous_header_hash: H256,
     pub merkle_root_hash: H256,
     pub time: u32,
-    pub bits: Compact,
+    pub bits: u32,
     pub nonce: u32,
 }
 
@@ -68,8 +68,8 @@ impl Serializable for BlockHeader {
 
 impl Deserializable for BlockHeader {
     fn deserialize<T>(reader: &mut Reader<T>) -> Result<Self, io::Error>
-    where
-        T: io::Read,
+        where
+            T: io::Read,
     {
         Ok(BlockHeader {
             version: reader.read()?,
@@ -128,7 +128,7 @@ mod tests {
             2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
             3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 0, 0, 0, 5, 0, 0, 0, 6, 0, 0, 0,
         ]
-        .into();
+            .into();
 
         assert_eq!(stream.out(), expected);
     }
