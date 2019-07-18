@@ -1,13 +1,13 @@
 #![cfg_attr(not(feature = "std"), no_std)]
 
-mod builder;
+pub mod builder;
 mod error;
 mod flags;
 mod interpreter;
 mod num;
 mod opcode;
-mod script;
-mod sign;
+pub mod script;
+pub mod sign;
 mod stack;
 mod verify;
 

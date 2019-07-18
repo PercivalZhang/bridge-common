@@ -5,8 +5,9 @@ authors = ["debris <marek.kotewicz@gmail.com> and koushiro <koushiro.cqx@gmail.c
 edition = "2018"
 
 [dependencies]
-ustd = { package = "ustd", path = "../../common/ustd", default-features = false }
+ustd = { path = "../../common/ustd", default-features = false }
 primitive-types = { path = "../../common/primitive-types", default-features = false, features = ["codec"] }
+substrate-primitives = { package = "substrate-primitives",git = 'https://github.com/paritytech/substrate.git', rev = '722e6d93125fa12813bd4bb767a653d20eaf2c87' , default-features = false }
 byteorder = { version = "1.3", default-features = false }
 rustc-hex = { version = "2.0", default-features = false }
 
@@ -21,7 +22,7 @@ std = [
     "rustc-hex/std",
     "primitive-types/std",
     "primitive-types/serde",
-
+    "substrate-primitives/std",
     "serde",
     "serde_derive",
 ]

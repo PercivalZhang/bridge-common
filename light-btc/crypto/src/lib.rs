@@ -35,8 +35,8 @@ impl Digest for DHash160 {
     }
 
     fn chain<B: AsRef<[u8]>>(self, data: B) -> Self
-    where
-        Self: Sized,
+        where
+            Self: Sized,
     {
         let mut tmp = self;
         tmp.input(data);
@@ -94,8 +94,8 @@ impl Digest for DHash256 {
     }
 
     fn chain<B: AsRef<[u8]>>(self, data: B) -> Self
-    where
-        Self: Sized,
+        where
+            Self: Sized,
     {
         let mut tmp = self;
         tmp.input(data);

@@ -1,7 +1,7 @@
 use ustd::prelude::*;
 
 use primitives::io::{self, Error, LittleEndian, Read, Write};
-use primitives::{Bytes, Compact, H160, H256, H264, H32, H48, H512, H520};
+use primitives::{Bytes, Compact, H160, H256, H512, H32, H48, H520, H264};
 
 use super::compact_integer::CompactInteger;
 use super::reader::{Deserializable, Reader};
@@ -101,8 +101,8 @@ impl Serializable for u64 {
 impl Deserializable for bool {
     #[inline]
     fn deserialize<T>(reader: &mut Reader<T>) -> Result<Self, Error>
-    where
-        T: io::Read,
+        where
+            T: io::Read,
     {
         let value = reader.read_u8()?;
         match value {
@@ -116,8 +116,8 @@ impl Deserializable for bool {
 impl Deserializable for i32 {
     #[inline]
     fn deserialize<T>(reader: &mut Reader<T>) -> Result<Self, Error>
-    where
-        T: io::Read,
+        where
+            T: io::Read,
     {
         Ok(reader.read_i32::<LittleEndian>()?)
     }
@@ -126,8 +126,8 @@ impl Deserializable for i32 {
 impl Deserializable for i64 {
     #[inline]
     fn deserialize<T>(reader: &mut Reader<T>) -> Result<Self, Error>
-    where
-        T: io::Read,
+        where
+            T: io::Read,
     {
         Ok(reader.read_i64::<LittleEndian>()?)
     }
@@ -136,8 +136,8 @@ impl Deserializable for i64 {
 impl Deserializable for u8 {
     #[inline]
     fn deserialize<T>(reader: &mut Reader<T>) -> Result<Self, Error>
-    where
-        T: io::Read,
+        where
+            T: io::Read,
     {
         Ok(reader.read_u8()?)
     }
@@ -146,8 +146,8 @@ impl Deserializable for u8 {
 impl Deserializable for u16 {
     #[inline]
     fn deserialize<T>(reader: &mut Reader<T>) -> Result<Self, Error>
-    where
-        T: io::Read,
+        where
+            T: io::Read,
     {
         Ok(reader.read_u16::<LittleEndian>()?)
     }
@@ -156,8 +156,8 @@ impl Deserializable for u16 {
 impl Deserializable for u32 {
     #[inline]
     fn deserialize<T>(reader: &mut Reader<T>) -> Result<Self, Error>
-    where
-        T: io::Read,
+        where
+            T: io::Read,
     {
         Ok(reader.read_u32::<LittleEndian>()?)
     }
@@ -166,8 +166,8 @@ impl Deserializable for u32 {
 impl Deserializable for u64 {
     #[inline]
     fn deserialize<T>(reader: &mut Reader<T>) -> Result<Self, Error>
-    where
-        T: io::Read,
+        where
+            T: io::Read,
     {
         Ok(reader.read_u64::<LittleEndian>()?)
     }
@@ -205,8 +205,8 @@ impl<'a> Serializable for &'a str {
 
 impl Deserializable for String {
     fn deserialize<T>(reader: &mut Reader<T>) -> Result<Self, Error>
-    where
-        T: io::Read,
+        where
+            T: io::Read,
     {
         let bytes: Bytes = reader.read()?;
         Ok(String::from_utf8_lossy(&bytes).into_owned())
@@ -262,8 +262,8 @@ impl Serializable for Bytes {
 
 impl Deserializable for Bytes {
     fn deserialize<T>(reader: &mut Reader<T>) -> Result<Self, Error>
-    where
-        T: io::Read,
+        where
+            T: io::Read,
     {
         let len = reader.read::<CompactInteger>()?;
         let mut bytes = Bytes::new_with_len(len.into());
@@ -280,8 +280,8 @@ impl Serializable for Compact {
 
 impl Deserializable for Compact {
     fn deserialize<T>(reader: &mut Reader<T>) -> Result<Self, Error>
-    where
-        T: io::Read,
+        where
+            T: io::Read,
     {
         reader.read::<u32>().map(Compact::new)
     }

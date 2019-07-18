@@ -3,7 +3,7 @@
 #![cfg_attr(not(feature = "std"), no_std)]
 
 mod address;
-mod display;
+pub mod display;
 mod error;
 mod keypair;
 mod private;
