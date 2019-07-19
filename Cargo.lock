@@ -676,7 +676,7 @@ dependencies = [
  "rustc-hex 2.0.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde 1.0.94 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde_derive 1.0.94 (registry+https://github.com/rust-lang/crates.io-index)",
- "substrate-primitives 2.0.0 (git+https://github.com/paritytech/substrate.git?rev=722e6d93125fa12813bd4bb767a653d20eaf2c87)",
+ "substrate-primitives 2.0.0 (git+https://github.com/paritytech/substrate.git?rev=f923ae2ac056da19feed7084eccdf84d9c545ab4)",
  "ustd 0.1.0",
 ]
 
@@ -1066,7 +1066,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 [[package]]
 name = "sr-std"
 version = "2.0.0"
-source = "git+https://github.com/paritytech/substrate.git?rev=722e6d93125fa12813bd4bb767a653d20eaf2c87#722e6d93125fa12813bd4bb767a653d20eaf2c87"
+source = "git+https://github.com/paritytech/substrate.git?rev=f923ae2ac056da19feed7084eccdf84d9c545ab4#f923ae2ac056da19feed7084eccdf84d9c545ab4"
 dependencies = [
  "rustc_version 0.2.3 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
@@ -1090,7 +1090,7 @@ dependencies = [
 [[package]]
 name = "substrate-primitives"
 version = "2.0.0"
-source = "git+https://github.com/paritytech/substrate.git?rev=722e6d93125fa12813bd4bb767a653d20eaf2c87#722e6d93125fa12813bd4bb767a653d20eaf2c87"
+source = "git+https://github.com/paritytech/substrate.git?rev=f923ae2ac056da19feed7084eccdf84d9c545ab4#f923ae2ac056da19feed7084eccdf84d9c545ab4"
 dependencies = [
  "base58 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "blake2-rfc 0.2.18 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -1109,7 +1109,7 @@ dependencies = [
  "schnorrkel 0.1.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde 1.0.94 (registry+https://github.com/rust-lang/crates.io-index)",
  "sha2 0.8.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "sr-std 2.0.0 (git+https://github.com/paritytech/substrate.git?rev=722e6d93125fa12813bd4bb767a653d20eaf2c87)",
+ "sr-std 2.0.0 (git+https://github.com/paritytech/substrate.git?rev=f923ae2ac056da19feed7084eccdf84d9c545ab4)",
  "substrate-bip39 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "tiny-bip39 0.6.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "twox-hash 1.4.2 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -1426,10 +1426,10 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 "checksum sha3 0.8.2 (registry+https://github.com/rust-lang/crates.io-index)" = "dd26bc0e7a2e3a7c959bc494caf58b72ee0c71d67704e9520f736ca7e4853ecf"
 "checksum siphasher 0.3.0 (registry+https://github.com/rust-lang/crates.io-index)" = "9913c75df657d84a03fa689c016b0bb2863ff0b497b26a8d6e9703f8d5df03a8"
 "checksum smallvec 0.6.10 (registry+https://github.com/rust-lang/crates.io-index)" = "ab606a9c5e214920bb66c458cd7be8ef094f813f20fe77a54cc7dbfff220d4b7"
-"checksum sr-std 2.0.0 (git+https://github.com/paritytech/substrate.git?rev=722e6d93125fa12813bd4bb767a653d20eaf2c87)" = "<none>"
+"checksum sr-std 2.0.0 (git+https://github.com/paritytech/substrate.git?rev=f923ae2ac056da19feed7084eccdf84d9c545ab4)" = "<none>"
 "checksum static_assertions 0.2.5 (registry+https://github.com/rust-lang/crates.io-index)" = "c19be23126415861cb3a23e501d34a708f7f9b2183c5252d690941c2e69199d5"
 "checksum substrate-bip39 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)" = "d69ace596e9ca97837cc41f8edcfc4e0a997f227d5fc153d1010b60a0fe9acda"
-"checksum substrate-primitives 2.0.0 (git+https://github.com/paritytech/substrate.git?rev=722e6d93125fa12813bd4bb767a653d20eaf2c87)" = "<none>"
+"checksum substrate-primitives 2.0.0 (git+https://github.com/paritytech/substrate.git?rev=f923ae2ac056da19feed7084eccdf84d9c545ab4)" = "<none>"
 "checksum subtle 1.0.0 (registry+https://github.com/rust-lang/crates.io-index)" = "2d67a5a62ba6e01cb2192ff309324cb4875d0c451d55fe2319433abe7a05a8ee"
 "checksum subtle 2.1.0 (registry+https://github.com/rust-lang/crates.io-index)" = "01dca13cf6c3b179864ab3292bd794e757618d35a7766b7c46050c614ba00829"
 "checksum syn 0.11.11 (registry+https://github.com/rust-lang/crates.io-index)" = "d3b891b9015c88c576343b9b3e41c2c11a51c219ef067b264bd9c8aa9b441dad"
