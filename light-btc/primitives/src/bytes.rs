@@ -6,7 +6,7 @@ use rustc_hex::{FromHex, FromHexError, ToHex};
 
 /// Wrapper around `Vec<u8>`
 #[derive(Ord, PartialOrd, Eq, PartialEq, Clone, Hash, Default)]
-pub struct Bytes(Vec<u8>);
+pub struct Bytes(pub Vec<u8>);
 
 impl<'a> From<&'a [u8]> for Bytes {
     fn from(v: &[u8]) -> Self {
@@ -105,8 +105,8 @@ impl Bytes {
 #[cfg(feature = "std")]
 impl serde::Serialize for Bytes {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-    where
-        S: serde::Serializer,
+        where
+            S: serde::Serializer,
     {
         let hex = self.0.to_hex::<String>();
         serializer.serialize_str(&format!("0x{}", hex))
@@ -116,8 +116,8 @@ impl serde::Serialize for Bytes {
 #[cfg(feature = "std")]
 impl<'de> serde::Deserialize<'de> for Bytes {
     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-    where
-        D: serde::Deserializer<'de>,
+        where
+            D: serde::Deserializer<'de>,
     {
         deserializer.deserialize_identifier(BytesVisitor)
     }
@@ -135,8 +135,8 @@ impl<'de> serde::de::Visitor<'de> for BytesVisitor {
     }
 
     fn visit_str<E>(self, v: &str) -> Result<Self::Value, E>
-    where
-        E: serde::de::Error,
+        where
+            E: serde::de::Error,
     {
         if v.len() >= 2 && &v[0..2] == "0x" && v.len() & 1 == 0 {
             Ok(Bytes(
@@ -148,8 +148,8 @@ impl<'de> serde::de::Visitor<'de> for BytesVisitor {
     }
 
     fn visit_string<E>(self, v: String) -> Result<Self::Value, E>
-    where
-        E: serde::de::Error,
+        where
+            E: serde::de::Error,
     {
         self.visit_str(v.as_ref())
     }
