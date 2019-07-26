@@ -13,7 +13,7 @@ impl-serde = { path = "impls/serde", default-features = false, optional = true }
 impl-codec = { path = "impls/codec", default-features = false, optional = true }
 impl-rlp = { path = "impls/rlp", default-features = false, optional = true }
 uint = { version = "0.6", default-features = false }
-fixed-hash = { version = "0.3", default-features = false }
+fixed-hash = { version = "0.4", default-features = false }
 
 [dev-dependencies]
 byteorder = { version = "1.3", default-features = false }
