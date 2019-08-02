@@ -549,11 +549,31 @@ version = "0.1.13"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
+name = "num-bigint"
+version = "0.2.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+dependencies = [
+ "num-integer 0.1.41 (registry+https://github.com/rust-lang/crates.io-index)",
+ "num-traits 0.2.8 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
 name = "num-integer"
 version = "0.1.41"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "autocfg 0.1.4 (registry+https://github.com/rust-lang/crates.io-index)",
+ "num-traits 0.2.8 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
+name = "num-rational"
+version = "0.2.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+dependencies = [
+ "autocfg 0.1.4 (registry+https://github.com/rust-lang/crates.io-index)",
+ "num-bigint 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ "num-integer 0.1.41 (registry+https://github.com/rust-lang/crates.io-index)",
  "num-traits 0.2.8 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
@@ -698,7 +718,7 @@ dependencies = [
  "rustc-hex 2.0.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde 1.0.94 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde_derive 1.0.94 (registry+https://github.com/rust-lang/crates.io-index)",
- "substrate-primitives 2.0.0 (git+https://github.com/paritytech/substrate.git?rev=8c1ed555bfb2bcbe5abe4e901c3a6a1796b273ca)",
+ "substrate-primitives 2.0.0 (git+https://github.com/paritytech/substrate.git?rev=04ef6fa2532c8cd34f737cdec200672bb8f40378)",
  "ustd 0.1.0",
 ]
 
@@ -1093,7 +1113,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 [[package]]
 name = "sr-std"
 version = "2.0.0"
-source = "git+https://github.com/paritytech/substrate.git?rev=8c1ed555bfb2bcbe5abe4e901c3a6a1796b273ca#8c1ed555bfb2bcbe5abe4e901c3a6a1796b273ca"
+source = "git+https://github.com/paritytech/substrate.git?rev=04ef6fa2532c8cd34f737cdec200672bb8f40378#04ef6fa2532c8cd34f737cdec200672bb8f40378"
 dependencies = [
  "rustc_version 0.2.3 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
@@ -1117,7 +1137,7 @@ dependencies = [
 [[package]]
 name = "substrate-primitives"
 version = "2.0.0"
-source = "git+https://github.com/paritytech/substrate.git?rev=8c1ed555bfb2bcbe5abe4e901c3a6a1796b273ca#8c1ed555bfb2bcbe5abe4e901c3a6a1796b273ca"
+source = "git+https://github.com/paritytech/substrate.git?rev=04ef6fa2532c8cd34f737cdec200672bb8f40378#04ef6fa2532c8cd34f737cdec200672bb8f40378"
 dependencies = [
  "base58 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "blake2-rfc 0.2.18 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -1138,11 +1158,11 @@ dependencies = [
  "schnorrkel 0.1.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde 1.0.94 (registry+https://github.com/rust-lang/crates.io-index)",
  "sha2 0.8.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "sr-std 2.0.0 (git+https://github.com/paritytech/substrate.git?rev=8c1ed555bfb2bcbe5abe4e901c3a6a1796b273ca)",
+ "sr-std 2.0.0 (git+https://github.com/paritytech/substrate.git?rev=04ef6fa2532c8cd34f737cdec200672bb8f40378)",
  "substrate-bip39 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "tiny-bip39 0.6.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "twox-hash 1.4.2 (registry+https://github.com/rust-lang/crates.io-index)",
- "wasmi 0.4.5 (registry+https://github.com/rust-lang/crates.io-index)",
+ "wasmi 0.5.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "zeroize 0.9.2 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
@@ -1307,10 +1327,13 @@ dependencies = [
 
 [[package]]
 name = "wasmi"
-version = "0.4.5"
+version = "0.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
+ "libc 0.2.60 (registry+https://github.com/rust-lang/crates.io-index)",
  "memory_units 0.3.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "num-rational 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ "num-traits 0.2.8 (registry+https://github.com/rust-lang/crates.io-index)",
  "parity-wasm 0.31.3 (registry+https://github.com/rust-lang/crates.io-index)",
  "wasmi-validation 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
@@ -1405,7 +1428,9 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 "checksum memory_units 0.3.0 (registry+https://github.com/rust-lang/crates.io-index)" = "71d96e3f3c0b6325d8ccd83c33b28acb183edcb6c67938ba104ec546854b0882"
 "checksum merlin 1.2.0 (registry+https://github.com/rust-lang/crates.io-index)" = "66448a173ad394ef5ebf734efa724f3644dcffda083b1e89979da4461ddac079"
 "checksum nodrop 0.1.13 (registry+https://github.com/rust-lang/crates.io-index)" = "2f9667ddcc6cc8a43afc9b7917599d7216aa09c463919ea32c59ed6cac8bc945"
+"checksum num-bigint 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)" = "57450397855d951f1a41305e54851b1a7b8f5d2e349543a02a2effe25459f718"
 "checksum num-integer 0.1.41 (registry+https://github.com/rust-lang/crates.io-index)" = "b85e541ef8255f6cf42bbfe4ef361305c6c135d10919ecc26126c4e5ae94bc09"
+"checksum num-rational 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)" = "f2885278d5fe2adc2f75ced642d52d879bffaceb5a2e0b1d4309ffdfb239b454"
 "checksum num-traits 0.2.8 (registry+https://github.com/rust-lang/crates.io-index)" = "6ba9a427cfca2be13aa6f6403b0b7e7368fe982bfa16fccc450ce74c46cd9b32"
 "checksum once_cell 0.1.8 (registry+https://github.com/rust-lang/crates.io-index)" = "532c29a261168a45ce28948f9537ddd7a5dd272cc513b3017b1e82a88f962c37"
 "checksum opaque-debug 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)" = "93f5bb2e8e8dec81642920ccff6b61f1eb94fa3020c5a325c9851ff604152409"
@@ -1458,10 +1483,10 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 "checksum sha3 0.8.2 (registry+https://github.com/rust-lang/crates.io-index)" = "dd26bc0e7a2e3a7c959bc494caf58b72ee0c71d67704e9520f736ca7e4853ecf"
 "checksum siphasher 0.3.0 (registry+https://github.com/rust-lang/crates.io-index)" = "9913c75df657d84a03fa689c016b0bb2863ff0b497b26a8d6e9703f8d5df03a8"
 "checksum smallvec 0.6.10 (registry+https://github.com/rust-lang/crates.io-index)" = "ab606a9c5e214920bb66c458cd7be8ef094f813f20fe77a54cc7dbfff220d4b7"
-"checksum sr-std 2.0.0 (git+https://github.com/paritytech/substrate.git?rev=8c1ed555bfb2bcbe5abe4e901c3a6a1796b273ca)" = "<none>"
+"checksum sr-std 2.0.0 (git+https://github.com/paritytech/substrate.git?rev=04ef6fa2532c8cd34f737cdec200672bb8f40378)" = "<none>"
 "checksum static_assertions 0.2.5 (registry+https://github.com/rust-lang/crates.io-index)" = "c19be23126415861cb3a23e501d34a708f7f9b2183c5252d690941c2e69199d5"
 "checksum substrate-bip39 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)" = "d69ace596e9ca97837cc41f8edcfc4e0a997f227d5fc153d1010b60a0fe9acda"
-"checksum substrate-primitives 2.0.0 (git+https://github.com/paritytech/substrate.git?rev=8c1ed555bfb2bcbe5abe4e901c3a6a1796b273ca)" = "<none>"
+"checksum substrate-primitives 2.0.0 (git+https://github.com/paritytech/substrate.git?rev=04ef6fa2532c8cd34f737cdec200672bb8f40378)" = "<none>"
 "checksum subtle 1.0.0 (registry+https://github.com/rust-lang/crates.io-index)" = "2d67a5a62ba6e01cb2192ff309324cb4875d0c451d55fe2319433abe7a05a8ee"
 "checksum subtle 2.1.0 (registry+https://github.com/rust-lang/crates.io-index)" = "01dca13cf6c3b179864ab3292bd794e757618d35a7766b7c46050c614ba00829"
 "checksum syn 0.11.11 (registry+https://github.com/rust-lang/crates.io-index)" = "d3b891b9015c88c576343b9b3e41c2c11a51c219ef067b264bd9c8aa9b441dad"
@@ -1481,7 +1506,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 "checksum unicode-xid 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)" = "fc72304796d0818e357ead4e000d19c9c174ab23dc11093ac919054d20a6a7fc"
 "checksum utf8-ranges 1.0.3 (registry+https://github.com/rust-lang/crates.io-index)" = "9d50aa7650df78abf942826607c62468ce18d9019673d4a2ebe1865dbb96ffde"
 "checksum vergen 3.0.4 (registry+https://github.com/rust-lang/crates.io-index)" = "6aba5e34f93dc7051dfad05b98a18e9156f27e7b431fe1d2398cb6061c0a1dba"
-"checksum wasmi 0.4.5 (registry+https://github.com/rust-lang/crates.io-index)" = "aebbaef470840d157a5c47c8c49f024da7b1b80e90ff729ca982b2b80447e78b"
+"checksum wasmi 0.5.0 (registry+https://github.com/rust-lang/crates.io-index)" = "48437c526d40a6a593c50c5367dac825b8d6a04411013e866eca66123fb56faa"
 "checksum wasmi-validation 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)" = "ab380192444b3e8522ae79c0a1976e42a82920916ccdfbce3def89f456ea33f3"
 "checksum winapi 0.3.7 (registry+https://github.com/rust-lang/crates.io-index)" = "f10e386af2b13e47c89e7236a7a14a086791a2b88ebad6df9bf42040195cf770"
 "checksum winapi-i686-pc-windows-gnu 0.4.0 (registry+https://github.com/rust-lang/crates.io-index)" = "ac3b87c63620426dd9b991e5ce0329eff545bccbbb34f3be09ff6fb6ab51b7b6"
