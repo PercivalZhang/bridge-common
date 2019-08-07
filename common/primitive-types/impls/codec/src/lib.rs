@@ -13,44 +13,48 @@
 pub use ustd::{mem, prelude::*, slice};
 
 #[doc(hidden)]
-pub use parity_codec as codec;
-
+pub use codec;
+pub use codec::Error;
 /// Add Parity Codec serialization support to an integer created by `construct_uint!`.
 #[macro_export]
 macro_rules! impl_uint_codec {
-    ($name: ident, $len: expr) => {
-        impl $crate::codec::Encode for $name {
-            fn using_encoded<R, F: FnOnce(&[u8]) -> R>(&self, f: F) -> R {
-                let mut bytes = [0u8; $len * 8];
-                self.to_little_endian(&mut bytes);
-                bytes.using_encoded(f)
-            }
-        }
+	($name: ident, $len: expr) => {
+		impl $crate::codec::Encode for $name {
+			fn using_encoded<R, F: FnOnce(&[u8]) -> R>(&self, f: F) -> R {
+				let mut bytes = [0u8; $len * 8];
+				self.to_little_endian(&mut bytes);
+				bytes.using_encoded(f)
+			}
+		}
 
-        impl $crate::codec::Decode for $name {
-            fn decode<I: $crate::codec::Input>(input: &mut I) -> Option<Self> {
-                <[u8; $len * 8] as $crate::codec::Decode>::decode(input)
-                    .map(|b| $name::from_little_endian(&b))
-            }
-        }
-    };
+		impl $crate::codec::Decode for $name {
+			fn decode<I: $crate::codec::Input>(input: &mut I)
+				-> core::result::Result<Self, $crate::codec::Error>
+			{
+				<[u8; $len * 8] as $crate::codec::Decode>::decode(input)
+					.map(|b| $name::from_little_endian(&b))
+			}
+		}
+	}
 }
 
 /// Add Parity Codec serialization support to a fixed-sized hash type created by `construct_fixed_hash!`.
 #[macro_export]
 macro_rules! impl_fixed_hash_codec {
-    ($name: ident, $len: expr) => {
-        impl $crate::codec::Encode for $name {
-            fn using_encoded<R, F: FnOnce(&[u8]) -> R>(&self, f: F) -> R {
-                self.0.using_encoded(f)
-            }
-        }
-        impl $crate::codec::Decode for $name {
-            fn decode<I: $crate::codec::Input>(input: &mut I) -> Option<Self> {
-                <[u8; $len] as $crate::codec::Decode>::decode(input).map($name)
-            }
-        }
-    };
+	($name: ident, $len: expr) => {
+		impl $crate::codec::Encode for $name {
+			fn using_encoded<R, F: FnOnce(&[u8]) -> R>(&self, f: F) -> R {
+				self.0.using_encoded(f)
+			}
+		}
+		impl $crate::codec::Decode for $name {
+			fn decode<I: $crate::codec::Input>(input: &mut I)
+				-> core::result::Result<Self, $crate::codec::Error>
+			{
+				<[u8; $len] as $crate::codec::Decode>::decode(input).map($name)
+			}
+		}
+	}
 }
 
 /// Add Parity Codec serialization extension for some array types.
@@ -73,19 +77,32 @@ macro_rules! impl_fixed_hash_codec_ext {
         }
 
         impl $crate::codec::Decode for $t {
-            fn decode<I: $crate::codec::Input>(input: &mut I) -> Option<Self> {
+            fn decode<I: $crate::codec::Input>(input: &mut I)
+                -> core::result::Result<Self, $crate::codec::Error>
+            {
                 let size = $crate::mem::size_of::<$t>();
                 assert!(size > 0, "EndianSensitive can never be implemented for a zero-sized type.");
-                let mut val: $t = unsafe { $crate::mem::zeroed() };
-
+                let mut val: $t = unsafe
+                 {
+                    $crate::mem::zeroed()
+                 };
+                let mut un = true;
                 unsafe {
-                    let raw: &mut [u8] = $crate::slice::from_raw_parts_mut(
-                        &mut val as *mut $t as *mut u8,
-                        size
-                    );
-                    if input.read(raw) != size { return None }
+                         let raw: &mut [u8] = $crate::slice::from_raw_parts_mut(
+                             &mut val as *mut _ as *mut u8,
+                             size
+                         );
+                         let ret = input.read(raw);
+                         if !ret.is_ok()
+                         {
+                           un = false;
+                         }
+                       }
+                if un {
+                 return core::result::Result::Ok(val);
+                }else{
+                   return core::result::Result::Err($crate::codec::Error::from("error ."));
                 }
-                Some(val)
             }
         }
     )* }

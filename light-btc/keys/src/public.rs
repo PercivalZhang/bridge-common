@@ -3,7 +3,8 @@ use ustd::{fmt, ops, prelude::*};
 use crypto::dhash160;
 use primitives::{H264, H512, H520};
 
-use parity_codec_derive::{Decode, Encode};
+//use parity_codec_derive::{Decode, Encode};
+use codec::{Decode, Encode};
 #[cfg(feature = "std")]
 use serde_derive::{Deserialize, Serialize};
 

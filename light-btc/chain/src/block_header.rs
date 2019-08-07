@@ -1,13 +1,14 @@
 use ustd::{fmt, prelude::*};
 
 use crypto::dhash256;
-use primitives::{io, Compact, H256};
+use primitives::{io, Compact, H256, Bytes};
 use serialization::{deserialize, serialize, Deserializable, Reader, Serializable, Stream};
 
 use rustc_hex::FromHex;
 
 #[cfg(feature = "std")]
 use serde_derive::{Deserialize, Serialize};
+use codec::Error;
 
 #[derive(Ord, PartialOrd, Eq, PartialEq, Copy, Clone, Default)]
 #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
@@ -82,24 +83,29 @@ impl Deserializable for BlockHeader {
     }
 }
 
-impl parity_codec::Encode for BlockHeader {
+impl codec::Encode for BlockHeader {
     fn encode(&self) -> Vec<u8> {
-        let value = serialize::<BlockHeader>(&self);
+        let value: Bytes = serialize::<BlockHeader>(&self);
         value.encode()
     }
 }
 
-impl parity_codec::Decode for BlockHeader {
-    fn decode<I: parity_codec::Input>(value: &mut I) -> Option<Self> {
-        let value: Option<Vec<u8>> = parity_codec::Decode::decode(value);
-        if let Some(value) = value {
-            if let Ok(header) = deserialize(Reader::new(&value)) {
-                Some(header)
-            } else {
-                None
+impl codec::Decode for BlockHeader {
+    fn decode<I: codec::Input>(value: &mut I) -> Result<Self, Error> {
+        let value: Result<Vec<u8>, Error> = codec::Decode::decode(value);
+        if value.is_ok() {
+            let temp = value.unwrap();
+            let v: Result<BlockHeader, io::Error> = deserialize(Reader::new(&temp));
+            match v {
+                Ok(v) => {
+                    return Ok(v);
+                }
+                Err(_) => {
+                    return Err(Error::from("decode fail ."));
+                }
             }
         } else {
-            None
+            return Err(Error::from("decode fail ."));
         }
     }
 }

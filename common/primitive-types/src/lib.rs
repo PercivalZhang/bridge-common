@@ -13,11 +13,11 @@
 
 #![cfg_attr(not(feature = "std"), no_std)]
 #![allow(
-    clippy::assign_op_pattern,
-    clippy::ptr_offset_with_cast,
-    clippy::suspicious_op_assign_impl,
-    clippy::suspicious_arithmetic_impl,
-    clippy::transmute_ptr_to_ptr
+clippy::assign_op_pattern,
+clippy::ptr_offset_with_cast,
+clippy::suspicious_op_assign_impl,
+clippy::suspicious_arithmetic_impl,
+clippy::transmute_ptr_to_ptr
 )]
 
 #[macro_use]
@@ -36,6 +36,7 @@ use impl_serde::{impl_fixed_hash_serde, impl_uint_serde};
 pub use impl_codec::codec;
 #[cfg(feature = "codec")]
 use impl_codec::{impl_fixed_hash_codec, impl_fixed_hash_codec_ext, impl_uint_codec};
+//use impl_codec::{impl_fixed_hash_codec, impl_uint_codec};
 
 #[cfg(feature = "rlp")]
 pub use impl_rlp::rlp;

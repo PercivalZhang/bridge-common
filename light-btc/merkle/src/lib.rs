@@ -9,7 +9,8 @@ use primitives::{io, H256};
 use serialization::{deserialize, serialize, Deserializable, Reader, Serializable, Stream};
 
 pub use bit_vec::BitVec;
-use parity_codec::{Decode, Encode, Input};
+//use parity_codec::{Decode, Encode, Input};
+use codec::{Decode, Encode, Input};
 
 #[derive(Debug)]
 pub enum Error {
@@ -82,9 +83,9 @@ impl Serializable for PartialMerkleTree {
 
 impl Deserializable for PartialMerkleTree {
     fn deserialize<T>(reader: &mut Reader<T>) -> Result<Self, io::Error>
-    where
-        Self: Sized,
-        T: io::Read,
+        where
+            Self: Sized,
+            T: io::Read,
     {
         Ok(PartialMerkleTree {
             tx_count: reader.read()?,
@@ -119,12 +120,21 @@ impl Encode for PartialMerkleTree {
 }
 
 impl Decode for PartialMerkleTree {
-    fn decode<I: Input>(input: &mut I) -> Option<Self> {
-        let value: Vec<u8> = Decode::decode(input).unwrap();
-        if let Ok(tree) = deserialize(Reader::new(&value)) {
-            Some(tree)
+    fn decode<I: Input>(input: &mut I) -> Result<Self, codec::Error> {
+        let value: Result<Vec<u8>, codec::Error> = codec::Decode::decode(input);
+        if value.is_ok() {
+            let temp = value.unwrap();
+            let v: Result<PartialMerkleTree, io::Error> = deserialize(Reader::new(&temp));
+            match v {
+                Ok(v) => {
+                    return Ok(v);
+                }
+                Err(_) => {
+                    return Err(codec::Error::from("decode fail ."));
+                }
+            }
         } else {
-            None
+            return Err(codec::Error::from("decode fail ."));
         }
     }
 }

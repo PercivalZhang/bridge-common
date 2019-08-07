@@ -46,3 +46,19 @@ vergen = '3'
 
 [profile.release]
 panic = 'unwind'
+
+[features]
+default = ["std"]
+std = [
+	'btc-ustd/std',
+	'btc-base58/std',
+	'btc-primitive-types/std',
+	'btc-primitives/std',
+	'btc-crypto/std',
+	'btc-serialization/std',
+	'btc-chain/std',
+	'btc-keys/std',
+	'btc-merkle/std',
+	'btc-script/std',
+	'bit-vec/std',
+]

@@ -17,6 +17,8 @@ use serde_derive::{Deserialize, Serialize};
 
 use super::constants::{LOCKTIME_THRESHOLD, SEQUENCE_FINAL};
 
+use codec::Error;
+
 /// Must be zero.
 const WITNESS_MARKER: u8 = 0;
 /// Must be nonzero.
@@ -50,9 +52,9 @@ impl Serializable for OutPoint {
 
 impl Deserializable for OutPoint {
     fn deserialize<T>(reader: &mut Reader<T>) -> Result<Self, io::Error>
-    where
-        Self: Sized,
-        T: io::Read,
+        where
+            Self: Sized,
+            T: io::Read,
     {
         Ok(OutPoint {
             hash: reader.read()?,
@@ -100,9 +102,9 @@ impl Serializable for TransactionInput {
 
 impl Deserializable for TransactionInput {
     fn deserialize<T>(reader: &mut Reader<T>) -> Result<Self, io::Error>
-    where
-        Self: Sized,
-        T: io::Read,
+        where
+            Self: Sized,
+            T: io::Read,
     {
         Ok(TransactionInput {
             previous_output: reader.read()?,
@@ -137,9 +139,9 @@ impl Serializable for TransactionOutput {
 
 impl Deserializable for TransactionOutput {
     fn deserialize<T>(reader: &mut Reader<T>) -> Result<Self, io::Error>
-    where
-        Self: Sized,
-        T: io::Read,
+        where
+            Self: Sized,
+            T: io::Read,
     {
         Ok(TransactionOutput {
             value: reader.read()?,
@@ -265,9 +267,9 @@ impl Serializable for Transaction {
 
 impl Deserializable for Transaction {
     fn deserialize<T>(reader: &mut Reader<T>) -> Result<Self, io::Error>
-    where
-        Self: Sized,
-        T: io::Read,
+        where
+            Self: Sized,
+            T: io::Read,
     {
         let version = reader.read()?;
         let mut inputs: Vec<TransactionInput> = reader.read_list()?;
@@ -298,24 +300,29 @@ impl Deserializable for Transaction {
     }
 }
 
-impl parity_codec::Encode for Transaction {
+impl codec::Encode for Transaction {
     fn encode(&self) -> Vec<u8> {
         let value = serialize::<Transaction>(&self);
         value.encode()
     }
 }
 
-impl parity_codec::Decode for Transaction {
-    fn decode<I: parity_codec::Input>(value: &mut I) -> Option<Self> {
-        let value: Option<Vec<u8>> = parity_codec::Decode::decode(value);
-        if let Some(value) = value {
-            if let Ok(tx) = deserialize(Reader::new(&value)) {
-                Some(tx)
-            } else {
-                None
+impl codec::Decode for Transaction {
+    fn decode<I: codec::Input>(value: &mut I) -> Result<Self, Error> {
+        let value: Result<Vec<u8>, Error> = codec::Decode::decode(value);
+        if value.is_ok() {
+            let temp = value.unwrap();
+            let v: Result<Transaction, io::Error> = deserialize(Reader::new(&temp));
+            match v {
+                Ok(v) => {
+                    return Ok(v);
+                }
+                Err(_) => {
+                    return Err(Error::from("decode fail ."));
+                }
             }
         } else {
-            None
+            return Err(Error::from("decode fail ."));
         }
     }
 }
@@ -367,36 +374,36 @@ mod tests {
         // test case from https://github.com/bitcoin/bips/blob/master/bip-0143.mediawiki
         let actual: Transaction = "01000000000102fff7f7881a8099afa6940d42d1e7f6362bec38171ea3edf433541db4e4ad969f00000000494830450221008b9d1dc26ba6a9cb62127b02742fa9d754cd3bebf337f7a55d114c8e5cdd30be022040529b194ba3f9281a99f2b1c0a19c0489bc22ede944ccf4ecbab4cc618ef3ed01eeffffffef51e1b804cc89d182d279655c3aa89e815b1b309fe287d9b2b55d57b90ec68a0100000000ffffffff02202cb206000000001976a9148280b37df378db99f66f85c95a783a76ac7a6d5988ac9093510d000000001976a9143bde42dbee7e4dbe6a21b2d50ce2f0167faa815988ac000247304402203609e17b84f6a7d30c80bfa610b5b4542f32a8a0d5447a12fb1366d7f01cc44a0220573a954c4518331561406f90300e8f3358f51928d43c212a8caed02de67eebee0121025476c2e83188368da1ff3e292e7acafcdb3566bb0ad253f62fc70f07aeee635711000000".into();
         let expected = Transaction {
-			version: 1,
-			inputs: vec![TransactionInput {
-				previous_output: OutPoint {
-					hash: H256::from_slice(&FromHex::from_hex::<Vec<u8>>("fff7f7881a8099afa6940d42d1e7f6362bec38171ea3edf433541db4e4ad969f").unwrap()),
-					index: 0,
-				},
-				script_sig: "4830450221008b9d1dc26ba6a9cb62127b02742fa9d754cd3bebf337f7a55d114c8e5cdd30be022040529b194ba3f9281a99f2b1c0a19c0489bc22ede944ccf4ecbab4cc618ef3ed01".into(),
-				sequence: 0xffffffee,
-				script_witness: vec![],
-			}, TransactionInput {
-				previous_output: OutPoint {
+            version: 1,
+            inputs: vec![TransactionInput {
+                previous_output: OutPoint {
+                    hash: H256::from_slice(&FromHex::from_hex::<Vec<u8>>("fff7f7881a8099afa6940d42d1e7f6362bec38171ea3edf433541db4e4ad969f").unwrap()),
+                    index: 0,
+                },
+                script_sig: "4830450221008b9d1dc26ba6a9cb62127b02742fa9d754cd3bebf337f7a55d114c8e5cdd30be022040529b194ba3f9281a99f2b1c0a19c0489bc22ede944ccf4ecbab4cc618ef3ed01".into(),
+                sequence: 0xffffffee,
+                script_witness: vec![],
+            }, TransactionInput {
+                previous_output: OutPoint {
                     hash: H256::from_slice(&FromHex::from_hex::<Vec<u8>>("ef51e1b804cc89d182d279655c3aa89e815b1b309fe287d9b2b55d57b90ec68a").unwrap()),
-					index: 1,
-				},
-				script_sig: "".into(),
-				sequence: 0xffffffff,
-				script_witness: vec![
-					"304402203609e17b84f6a7d30c80bfa610b5b4542f32a8a0d5447a12fb1366d7f01cc44a0220573a954c4518331561406f90300e8f3358f51928d43c212a8caed02de67eebee01".into(),
-					"025476c2e83188368da1ff3e292e7acafcdb3566bb0ad253f62fc70f07aeee6357".into(),
-				],
-			}],
-			outputs: vec![TransactionOutput {
-				value: 0x0000000006b22c20,
-				script_pubkey: "76a9148280b37df378db99f66f85c95a783a76ac7a6d5988ac".into(),
-			}, TransactionOutput {
-				value: 0x000000000d519390,
-				script_pubkey: "76a9143bde42dbee7e4dbe6a21b2d50ce2f0167faa815988ac".into(),
-			}],
-			lock_time: 0x00000011,
-		};
+                    index: 1,
+                },
+                script_sig: "".into(),
+                sequence: 0xffffffff,
+                script_witness: vec![
+                    "304402203609e17b84f6a7d30c80bfa610b5b4542f32a8a0d5447a12fb1366d7f01cc44a0220573a954c4518331561406f90300e8f3358f51928d43c212a8caed02de67eebee01".into(),
+                    "025476c2e83188368da1ff3e292e7acafcdb3566bb0ad253f62fc70f07aeee6357".into(),
+                ],
+            }],
+            outputs: vec![TransactionOutput {
+                value: 0x0000000006b22c20,
+                script_pubkey: "76a9148280b37df378db99f66f85c95a783a76ac7a6d5988ac".into(),
+            }, TransactionOutput {
+                value: 0x000000000d519390,
+                script_pubkey: "76a9143bde42dbee7e4dbe6a21b2d50ce2f0167faa815988ac".into(),
+            }],
+            lock_time: 0x00000011,
+        };
         assert_eq!(actual, expected);
     }
 

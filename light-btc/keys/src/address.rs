@@ -12,7 +12,8 @@ use crypto::checksum;
 use primitives::io;
 use serialization::{Deserializable, Reader, Serializable, Stream};
 
-use parity_codec_derive::{Decode, Encode};
+//use parity_codec_derive::{Decode, Encode};
+use codec::{Decode, Encode};
 #[cfg(feature = "std")]
 use serde_derive::{Deserialize, Serialize};
 
@@ -62,9 +63,9 @@ impl Serializable for Type {
 
 impl Deserializable for Type {
     fn deserialize<T>(reader: &mut Reader<T>) -> Result<Self, io::Error>
-    where
-        Self: Sized,
-        T: io::Read,
+        where
+            Self: Sized,
+            T: io::Read,
     {
         let t: u32 = reader.read()?;
         Type::from(t).ok_or(io::Error::ReadMalformedData)
@@ -105,9 +106,9 @@ impl Serializable for Network {
 
 impl Deserializable for Network {
     fn deserialize<T>(reader: &mut Reader<T>) -> Result<Self, io::Error>
-    where
-        Self: Sized,
-        T: io::Read,
+        where
+            Self: Sized,
+            T: io::Read,
     {
         let t: u32 = reader.read()?;
         Network::from(t).ok_or(io::Error::ReadMalformedData)
@@ -136,8 +137,8 @@ impl str::FromStr for Address {
     type Err = Error;
 
     fn from_str(s: &str) -> Result<Self, Error>
-    where
-        Self: Sized,
+        where
+            Self: Sized,
     {
         let hex = s.from_base58().map_err(|_| Error::InvalidAddress)?;
         Address::from_layout(&hex)
@@ -160,9 +161,9 @@ impl Serializable for Address {
 
 impl Deserializable for Address {
     fn deserialize<T>(reader: &mut Reader<T>) -> Result<Self, io::Error>
-    where
-        Self: Sized,
-        T: io::Read,
+        where
+            Self: Sized,
+            T: io::Read,
     {
         Ok(Address {
             kind: reader.read()?,
@@ -203,8 +204,8 @@ impl DisplayLayout for Address {
     }
 
     fn from_layout(data: &[u8]) -> Result<Self, Error>
-    where
-        Self: Sized,
+        where
+            Self: Sized,
     {
         if data.len() != 25 {
             return Err(Error::InvalidAddress);
