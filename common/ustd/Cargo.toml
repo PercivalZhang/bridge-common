@@ -9,7 +9,7 @@ edition = "2018"
 cfg-if = "0.1"
 
 [features]
-default = ["core_intrinsics","alloc_prelude"]
+default = ["std"]
 std = []
 core_intrinsics=[]
 alloc_prelude=[]
