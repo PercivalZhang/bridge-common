@@ -1,9 +1,9 @@
 [package]
-name = 'btc-bridge'
+name = 'btc-common'
 build = 'build.rs'
 edition = '2018'
 version = '1.0.0'
-description = "btc bridge for substrate . "
+description = "btc common for substrate . "
 
 
 [dependencies]
@@ -36,7 +36,6 @@ members = [
     "light-btc/primitives",
     "light-btc/script",
     "light-btc/serialization",
-
 ]
 
 
