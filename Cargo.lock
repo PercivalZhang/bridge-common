@@ -118,7 +118,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "bridge-common"
+name = "btc-bridge"
 version = "1.0.0"
 dependencies = [
  "base58 0.1.0",

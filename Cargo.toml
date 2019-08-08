@@ -1,8 +1,10 @@
 [package]
+name = 'btc-bridge'
 build = 'build.rs'
 edition = '2018'
-name = 'bridge-common'
 version = '1.0.0'
+description = "btc bridge for substrate . "
+
 
 [dependencies]
 bit-vec = {path='./bit-vec'}
