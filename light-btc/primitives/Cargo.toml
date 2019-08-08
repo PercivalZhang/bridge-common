@@ -8,7 +8,7 @@ edition = "2018"
 ustd = { path = "../../common/ustd", default-features = false }
 primitive-types = { path = "../../common/primitive-types", default-features = false, features = ["codec"] }
 #substrate-primitives = { package = "substrate-primitives",git = 'https://github.com/paritytech/substrate.git', rev = '4408fa7d17c4a25e859411dd1d046b86d5b0a339' , default-features = false }
-substrate-primitives = { package = "substrate-primitives",git = 'https://github.com/paritytech/substrate.git', rev = 'e348b5b32896dd473e74f54fe0bf5d7fce8f8cfd' , default-features = false }
+substrate-primitives = { package = "substrate-primitives",git = 'https://github.com/paritytech/substrate.git', rev = '9b3e9f32cd5243d2eeff3d5d8337033aa64c091b' , default-features = false }
 byteorder = { version = "1.3", default-features = false }
 rustc-hex = { version = "2.0", default-features = false }
 
