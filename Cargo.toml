@@ -10,7 +10,7 @@ description = "btc bridge for substrate . "
 bit-vec = {path='./bit-vec'}
 btc-base58= {path='./common/base58',package='base58'}
 btc-primitive-types={path='./common/primitive-types',package='primitive-types'}
-btc-ustd={path='./common/ustd',package='ustd'}
+btc-ustd={path='./common/ustd',package='ustd',default-features = false, features = ["core_intrinsics","alloc_prelude"]}
 btc-chain={path='./light-btc/chain',package='chain'}
 btc-crypto={path='./light-btc/crypto',package='crypto'}
 btc-keys={path='./light-btc/keys',package='keys'}
