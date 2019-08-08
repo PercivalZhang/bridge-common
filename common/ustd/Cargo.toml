@@ -11,5 +11,3 @@ cfg-if = "0.1"
 [features]
 default = ["std"]
 std = []
-core_intrinsics=[]
-alloc_prelude=[]
