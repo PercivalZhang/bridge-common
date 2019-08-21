@@ -127,24 +127,22 @@ impl<'de> serde::Deserialize<'de> for Bytes {
 
 impl codec::Encode for Bytes {
     fn encode(&self) -> Vec<u8> {
-        self.0.clone()
+        let len: u64 = self.0.len() as u64;
+        let mut bytes: Vec<u8> = len.to_le_bytes().to_vec();
+        bytes.extend(&self.0);
+        return bytes;
     }
 }
 
 impl codec::Decode for Bytes {
     fn decode<I: codec::Input>(value: &mut I) -> Result<Self, Error> {
-        let len: Result<Option<usize>, Error> = value.remaining_len();
-        match len {
-            Ok(v) => {
-                let len = v.unwrap();
-                let mut buf: Vec<u8> = Vec::with_capacity(len);
-                value.read(&mut buf[..]);
-                return Ok(Self(buf));
-            }
-            Err(_) => {
-                return Err(Error::from("decode fail ."));
-            }
-        }
+        let mut buf: [u8; 8] = [0u8; 8];
+        value.read(&mut buf)?;
+        let len: u64 = u64::from_le_bytes(buf);
+
+        let mut buf: Vec<u8> = vec![0u8; len as usize];
+        value.read(&mut buf)?;
+        return Ok(Self(buf));
     }
 }
 
