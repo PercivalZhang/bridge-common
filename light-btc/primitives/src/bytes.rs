@@ -3,7 +3,7 @@
 use ustd::{fmt, marker, ops, prelude::*, str};
 
 use rustc_hex::{FromHex, FromHexError, ToHex};
-use codec::{Encode, Decode, Error};
+use codec::{Encode, Decode, Error, Compact};
 
 /// Wrapper around `Vec<u8>`
 #[derive(Ord, PartialOrd, Eq, PartialEq, Clone, Hash, Default)]
@@ -128,7 +128,9 @@ impl<'de> serde::Deserialize<'de> for Bytes {
 impl codec::Encode for Bytes {
     fn encode(&self) -> Vec<u8> {
         let len: u64 = self.0.len() as u64;
-        let mut bytes: Vec<u8> = len.to_le_bytes().to_vec();
+        let count = Compact(len);
+
+        let mut bytes: Vec<u8> = count.encode();
         bytes.extend(&self.0);
         return bytes;
     }
@@ -136,11 +138,8 @@ impl codec::Encode for Bytes {
 
 impl codec::Decode for Bytes {
     fn decode<I: codec::Input>(value: &mut I) -> Result<Self, Error> {
-        let mut buf: [u8; 8] = [0u8; 8];
-        value.read(&mut buf)?;
-        let len: u64 = u64::from_le_bytes(buf);
-
-        let mut buf: Vec<u8> = vec![0u8; len as usize];
+        let len = Compact::<u64>::decode(value)?;
+        let mut buf: Vec<u8> = vec![0u8; len.0 as usize];
         value.read(&mut buf)?;
         return Ok(Self(buf));
     }
