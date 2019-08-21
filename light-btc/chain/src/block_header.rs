@@ -8,9 +8,9 @@ use rustc_hex::FromHex;
 
 #[cfg(feature = "std")]
 use serde_derive::{Deserialize, Serialize};
-use codec::Error;
+use codec::{Error, Encode, Decode};
 
-#[derive(Ord, PartialOrd, Eq, PartialEq, Copy, Clone, Default)]
+#[derive(Ord, PartialOrd, Eq, PartialEq, Copy, Clone, Default, Encode, Decode)]
 #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
 pub struct BlockHeader {
     pub version: u32,
@@ -80,33 +80,6 @@ impl Deserializable for BlockHeader {
             bits: reader.read()?,
             nonce: reader.read()?,
         })
-    }
-}
-
-impl codec::Encode for BlockHeader {
-    fn encode(&self) -> Vec<u8> {
-        let value: Bytes = serialize::<BlockHeader>(&self);
-        value.encode()
-    }
-}
-
-impl codec::Decode for BlockHeader {
-    fn decode<I: codec::Input>(value: &mut I) -> Result<Self, Error> {
-        let value: Result<Vec<u8>, Error> = codec::Decode::decode(value);
-        if value.is_ok() {
-            let temp = value.unwrap();
-            let v: Result<BlockHeader, io::Error> = deserialize(Reader::new(&temp));
-            match v {
-                Ok(v) => {
-                    return Ok(v);
-                }
-                Err(_) => {
-                    return Err(Error::from("decode fail ."));
-                }
-            }
-        } else {
-            return Err(Error::from("decode fail ."));
-        }
     }
 }
 
