@@ -3,6 +3,7 @@
 use ustd::{fmt, marker, ops, prelude::*, str};
 
 use rustc_hex::{FromHex, FromHexError, ToHex};
+use codec::{Encode, Decode, Error};
 
 /// Wrapper around `Vec<u8>`
 #[derive(Ord, PartialOrd, Eq, PartialEq, Clone, Hash, Default)]
@@ -122,6 +123,31 @@ impl<'de> serde::Deserialize<'de> for Bytes {
         deserializer.deserialize_identifier(BytesVisitor)
     }
 }
+
+
+impl codec::Encode for Bytes {
+    fn encode(&self) -> Vec<u8> {
+        self.0.clone()
+    }
+}
+
+impl codec::Decode for Bytes {
+    fn decode<I: codec::Input>(value: &mut I) -> Result<Self, Error> {
+        let len: Result<Option<usize>, Error> = value.remaining_len();
+        match len {
+            Ok(v) => {
+                let len = v.unwrap();
+                let mut buf: Vec<u8> = Vec::with_capacity(len);
+                value.read(&mut buf[..]);
+                return Ok(Self(buf));
+            }
+            Err(_) => {
+                return Err(Error::from("decode fail ."));
+            }
+        }
+    }
+}
+
 
 #[cfg(feature = "std")]
 struct BytesVisitor;

@@ -17,14 +17,14 @@ use serde_derive::{Deserialize, Serialize};
 
 use super::constants::{LOCKTIME_THRESHOLD, SEQUENCE_FINAL};
 
-use codec::Error;
+use codec::{Error, Encode, Decode};
 
 /// Must be zero.
 const WITNESS_MARKER: u8 = 0;
 /// Must be nonzero.
 const WITNESS_FLAG: u8 = 1;
 
-#[derive(Ord, PartialOrd, PartialEq, Eq, Copy, Clone, Debug, Default)]
+#[derive(Ord, PartialOrd, PartialEq, Eq, Copy, Clone, Debug, Default, Encode, Decode)]
 #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
 pub struct OutPoint {
     pub hash: H256,
@@ -63,7 +63,7 @@ impl Deserializable for OutPoint {
     }
 }
 
-#[derive(Ord, PartialOrd, Eq, PartialEq, Clone, Debug, Default)]
+#[derive(Ord, PartialOrd, Eq, PartialEq, Clone, Debug, Default, Encode, Decode)]
 #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
 pub struct TransactionInput {
     pub previous_output: OutPoint,
@@ -115,7 +115,7 @@ impl Deserializable for TransactionInput {
     }
 }
 
-#[derive(Ord, PartialOrd, Eq, PartialEq, Clone, Debug)]
+#[derive(Ord, PartialOrd, Eq, PartialEq, Clone, Debug, Encode, Decode)]
 #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
 pub struct TransactionOutput {
     pub value: u64,
@@ -150,7 +150,7 @@ impl Deserializable for TransactionOutput {
     }
 }
 
-#[derive(Ord, PartialOrd, Eq, PartialEq, Clone, Debug, Default)]
+#[derive(Ord, PartialOrd, Eq, PartialEq, Clone, Debug, Default, Encode, Decode)]
 #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
 pub struct Transaction {
     pub version: i32,
@@ -297,33 +297,6 @@ impl Deserializable for Transaction {
             outputs,
             lock_time: reader.read()?,
         })
-    }
-}
-
-impl codec::Encode for Transaction {
-    fn encode(&self) -> Vec<u8> {
-        let value = serialize::<Transaction>(&self);
-        value.encode()
-    }
-}
-
-impl codec::Decode for Transaction {
-    fn decode<I: codec::Input>(value: &mut I) -> Result<Self, Error> {
-        let value: Result<Vec<u8>, Error> = codec::Decode::decode(value);
-        if value.is_ok() {
-            let temp = value.unwrap();
-            let v: Result<Transaction, io::Error> = deserialize(Reader::new(&temp));
-            match v {
-                Ok(v) => {
-                    return Ok(v);
-                }
-                Err(_) => {
-                    return Err(Error::from("decode fail ."));
-                }
-            }
-        } else {
-            return Err(Error::from("decode fail ."));
-        }
     }
 }
 
