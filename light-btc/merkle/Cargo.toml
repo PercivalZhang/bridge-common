@@ -10,7 +10,6 @@ primitives = { path = "../primitives", default-features = false }
 serialization = { path = "../serialization", default-features = false }
 chain = { path = "../chain", default-features = false }
 bit-vec = { path = "../../bit-vec", default-features = false }
-#parity-codec = { version = "4.1.4", default-features = false }
 codec = { package = "parity-scale-codec", version = "1.0.0", default-features = false, features = ["derive"] }
 
 [dev-dependencies]
@@ -24,6 +23,5 @@ std = [
      "serialization/std",
      "chain/std",
      "bit-vec/std",
-#     "parity-codec/std",
      "codec/std",
 ]
