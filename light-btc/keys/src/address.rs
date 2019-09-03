@@ -55,8 +55,8 @@ impl Type {
 impl Serializable for Type {
     fn serialize(&self, s: &mut Stream) {
         let _stream = match *self {
-            Type::P2PKH => s.append(&Type::P2PKH),
-            Type::P2SH => s.append(&Type::P2SH),
+            Type::P2PKH => s.append(&0u8),
+            Type::P2SH => s.append(&1u8),
         };
     }
 }
@@ -67,8 +67,8 @@ impl Deserializable for Type {
             Self: Sized,
             T: io::Read,
     {
-        let t: u32 = reader.read()?;
-        Type::from(t).ok_or(io::Error::ReadMalformedData)
+        let t: u8 = reader.read()?;
+        Type::from(t as u32).ok_or(io::Error::ReadMalformedData)
     }
 }
 
@@ -98,8 +98,8 @@ impl Network {
 impl Serializable for Network {
     fn serialize(&self, s: &mut Stream) {
         let _stream = match *self {
-            Network::Mainnet => s.append(&Network::Mainnet),
-            Network::Testnet => s.append(&Network::Testnet),
+            Network::Mainnet => s.append(&0u8),
+            Network::Testnet => s.append(&1u8),
         };
     }
 }
@@ -110,8 +110,8 @@ impl Deserializable for Network {
             Self: Sized,
             T: io::Read,
     {
-        let t: u32 = reader.read()?;
-        Network::from(t).ok_or(io::Error::ReadMalformedData)
+        let t: u8 = reader.read()?;
+        Network::from(t as u32).ok_or(io::Error::ReadMalformedData)
     }
 }
 
@@ -265,5 +265,15 @@ mod tests {
         };
 
         assert_eq!(address, "16meyfSoQV6twkAAxPe51RtMVz7PGRmWna".into());
+    }
+
+    #[test]
+    fn test_address_from_str_1() {
+        let address = Address::from("mkCxJUWXQ5bcGs8wMhsR7wcSPRkAL2RGTj");
+        let mut stream = Stream::new();
+        address.serialize(&mut stream);
+        assert_eq!(stream.out().len(), 22);
+        assert_eq!(address.kind, Type::P2PKH);
+        assert_eq!(address, "mkCxJUWXQ5bcGs8wMhsR7wcSPRkAL2RGTj".into());
     }
 }
