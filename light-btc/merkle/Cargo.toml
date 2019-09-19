@@ -10,7 +10,7 @@ primitives = { path = "../primitives", default-features = false }
 serialization = { path = "../serialization", default-features = false }
 chain = { path = "../chain", default-features = false }
 bit-vec = { path = "../../bit-vec", default-features = false }
-codec = { package = "parity-scale-codec", version = "1.0.0", default-features = false, features = ["derive"] }
+codec = { package = "parity-scale-codec", version = "1.0.5", default-features = false, features = ["derive"] }
 
 [dev-dependencies]
 crypto = { path = "../crypto", default-features = false }
